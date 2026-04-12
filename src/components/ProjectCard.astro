@@ -14,10 +14,10 @@ const { name, description, url, pagesUrl, languages, forkedFrom, org } = Astro.p
 
 <div class="project-card">
   <div class="project-header">
-    <h3><a href={url}>{org ? `${org}/` : ''}{name}</a></h3>
+    <h3><a href={url} target="_blank" rel="noopener noreferrer">{org ? `${org}/` : ''}{name}</a></h3>
     <div class="project-badges">
-      {forkedFrom && <a href={`https://github.com/${forkedFrom}`} class="fork-badge" title={`Forked from ${forkedFrom}`}>fork</a>}
-      {pagesUrl && <a href={pagesUrl} class="live-link">Live</a>}
+      {forkedFrom && <a href={`https://github.com/${forkedFrom}`} class="fork-badge" title={`Forked from ${forkedFrom}`} aria-label={`Forked from ${forkedFrom}`} target="_blank" rel="noopener noreferrer">fork</a>}
+      {pagesUrl && <a href={pagesUrl} class="live-link" target="_blank" rel="noopener noreferrer">Live</a>}
     </div>
   </div>
   {description && <p class="project-desc">{description}</p>}
