@@ -11,10 +11,33 @@ const posts = (await getCollection('blog')).sort(
   <section class="hero">
     <h1>Hey, I'm Leo.</h1>
     <p>
-      I'm a software developer who builds things across the stack &mdash; from
-      Rust CLI tools and Python ML pipelines to TypeScript web apps and browser
-      games. This site is home to my <a href="/projects">projects</a> and an
-      occasional <a href="/blog">blog</a>.
+      I'm an engineer. Not as a job title &mdash; as a way of thinking.
+    </p>
+    <p>
+      To me, engineering comes down to two flavours of problem solving: fixing
+      things that are broken, and making things that work better. That pattern
+      doesn't change whether you're writing software, surveying geodetic data
+      on a construction site, or standing in front of a classroom. The
+      cognitive practice crosses every boundary people try to draw around it.
+    </p>
+    <p>
+      I've been called a polymath, and maybe that's fair. I've brought software
+      engineering into civil engineering projects, security engineering into
+      cloud platforms, and all of the above into teaching &mdash; both in person
+      and online. I've founded companies and organisations, built them up, and
+      moved on once they could sustain themselves. With every new skill I aim to
+      learn deeply from both study and practice, then apply broadly.
+    </p>
+    <p>
+      People ask what kind of engineer. The honest answer is that the kind
+      matters less than the thinking. A mechanical engineer and a software
+      engineer solve problems differently in practice but identically in
+      pattern. I just happen to enjoy working across the whole spectrum.
+    </p>
+    <p>
+      This site is home to my <a href="/projects">projects</a> and an
+      occasional <a href="/blog">blog</a>. Who knows &mdash; maybe you'll want
+      me on your next project.
     </p>
   </section>
 
@@ -52,6 +75,11 @@ const posts = (await getCollection('blog')).sort(
     color: var(--color-muted);
     line-height: 1.7;
     max-width: 580px;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero p:last-child {
+    margin-bottom: 0;
   }
 
   .recent-posts h2 {
