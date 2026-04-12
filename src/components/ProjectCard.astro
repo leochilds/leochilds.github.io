@@ -81,18 +81,33 @@ const { name, description, url, pagesUrl, youtubeUrl, languages, forkedFrom, org
   }
 
   .youtube-link {
-    font-size: 0.75rem;
-    padding: 0.1rem 0.45rem;
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
     border: 1px solid #c00;
     border-radius: 4px;
     color: #c00;
     white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .youtube-link {
+      color: #ff4d4d;
+      border-color: #ff4d4d;
+    }
   }
 
   .youtube-link:hover {
     background: #c00;
     color: #fff;
     text-decoration: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .youtube-link:hover {
+      background: #ff4d4d;
+      color: #111;
+    }
   }
 
   .project-header h3 {
