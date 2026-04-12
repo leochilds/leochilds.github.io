@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+).slice(0, 3);
+---
+
+<Base title="Home">
+  <section class="hero">
+    <h1>Hey, I'm Leo.</h1>
+    <p>
+      I'm a software developer who builds things across the stack &mdash; from
+      Rust CLI tools and Python ML pipelines to TypeScript web apps and browser
+      games. This site is home to my <a href="/projects">projects</a> and an
+      occasional <a href="/blog">blog</a>.
+    </p>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="recent-posts">
+      <h2>Recent posts</h2>
+      <ul>
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}`}>{post.data.title}</a>
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })}
+            </time>
+          </li>
+        ))}
+      </ul>
+      <a href="/blog" class="see-all">All posts &rarr;</a>
+    </section>
+  )}
+</Base>
+
+<style>
+  .hero {
+    margin-bottom: 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    line-height: 1.7;
+    max-width: 580px;
+  }
+
+  .recent-posts h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .recent-posts ul {
+    list-style: none;
+  }
+
+  .recent-posts li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+    gap: 1rem;
+  }
+
+  .recent-posts li a {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .recent-posts li a:hover {
+    color: var(--color-accent);
+  }
+
+  .recent-posts time {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .see-all {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+</style>

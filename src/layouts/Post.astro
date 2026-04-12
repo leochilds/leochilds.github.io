@@ -1,0 +1,83 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  description?: string;
+}
+
+const { title, date, description } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('en-GB', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={title} description={description}>
+  <article class="post">
+    <header class="post-header">
+      <h1>{title}</h1>
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+    </header>
+    <div class="post-content">
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post-header {
+    margin-bottom: 2rem;
+  }
+
+  .post-header h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-header time {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .post-content {
+    line-height: 1.75;
+  }
+
+  .post-content :global(h2) {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-content :global(h3) {
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 0.25rem;
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 3px solid var(--color-border);
+    padding-left: 1rem;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+</style>
