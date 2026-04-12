@@ -5,15 +5,20 @@ interface Props {
   url: string;
   pagesUrl?: string;
   languages: string[];
+  forkedFrom?: string;
+  org?: string;
 }
 
-const { name, description, url, pagesUrl, languages } = Astro.props;
+const { name, description, url, pagesUrl, languages, forkedFrom, org } = Astro.props;
 ---
 
 <div class="project-card">
   <div class="project-header">
-    <h3><a href={url}>{name}</a></h3>
-    {pagesUrl && <a href={pagesUrl} class="live-link">Live</a>}
+    <h3><a href={url} target="_blank" rel="noopener noreferrer">{org ? `${org}/` : ''}{name}</a></h3>
+    <div class="project-badges">
+      {forkedFrom && <a href={`https://github.com/${forkedFrom}`} class="fork-badge" title={`Forked from ${forkedFrom}`} aria-label={`Forked from ${forkedFrom}`} target="_blank" rel="noopener noreferrer">fork</a>}
+      {pagesUrl && <a href={pagesUrl} class="live-link" target="_blank" rel="noopener noreferrer">Live</a>}
+    </div>
   </div>
   {description && <p class="project-desc">{description}</p>}
   {languages.length > 0 && (
@@ -43,6 +48,28 @@ const { name, description, url, pagesUrl, languages } = Astro.props;
     justify-content: space-between;
     gap: 0.75rem;
     margin-bottom: 0.5rem;
+  }
+
+  .project-badges {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .fork-badge {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 4px;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .fork-badge:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    text-decoration: none;
   }
 
   .project-header h3 {

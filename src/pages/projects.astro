@@ -8,6 +8,8 @@ interface Repo {
   url: string;
   pagesUrl?: string;
   languages: string[];
+  forkedFrom?: string;
+  org?: string;
 }
 
 const featured: Repo[] = [
@@ -23,6 +25,7 @@ const featured: Repo[] = [
     description: 'Local voice recording for creating Piper TTS datasets.',
     url: 'https://github.com/leochilds/piper-recording-studio',
     languages: ['JavaScript', 'Python', 'HTML'],
+    forkedFrom: 'rhasspy/piper-recording-studio',
   },
   {
     name: 'LionPDF',
@@ -41,6 +44,7 @@ const featured: Repo[] = [
     description: 'Tokenizer-Free TTS for context-aware speech generation and true-to-life voice cloning.',
     url: 'https://github.com/leochilds/VoxCPM',
     languages: ['Python'],
+    forkedFrom: 'OpenBMB/VoxCPM',
   },
   {
     name: 'library',
@@ -54,12 +58,14 @@ const featured: Repo[] = [
     description: 'AI-powered Python malware scanner.',
     url: 'https://github.com/leochilds/malwi',
     languages: ['Python', 'JavaScript', 'Rust'],
+    forkedFrom: 'canvascomputing/malwi-proof-of-concept',
   },
   {
     name: 'hanabot',
     description: 'A Hanabi card game bot for Slack.',
     url: 'https://github.com/leochilds/hanabot',
     languages: ['Rust'],
+    forkedFrom: 'jonhoo/hanabot',
   },
   {
     name: 'journal',
@@ -112,6 +118,7 @@ const tools: Repo[] = [
     description: 'Fork of the community-maintained Python framework for creating mathematical animations.',
     url: 'https://github.com/leochilds/manim',
     languages: ['Python', 'GLSL'],
+    forkedFrom: 'ManimCommunity/manim',
   },
   {
     name: 'serverless-event-driven-starter-app',
@@ -217,11 +224,48 @@ const learning: Repo[] = [
   },
 ];
 
+const canvasComputing: Repo[] = [
+  {
+    name: 'agent',
+    description: 'Minimal Agentic Framework for creating agentic LLM applications.',
+    url: 'https://github.com/canvascomputing/agent',
+    languages: ['Rust', 'Makefile'],
+    org: 'canvascomputing',
+  },
+  {
+    name: 'malwi',
+    description: 'Detect Evil Code - malwi intercepts Python, Node.js and Bash code at runtime.',
+    url: 'https://github.com/canvascomputing/malwi',
+    languages: ['Rust', 'C', 'C++', 'Shell', 'Python', 'JavaScript'],
+    org: 'canvascomputing',
+  },
+  {
+    name: 'malwi-proof-of-concept',
+    description: 'AI Python Malware Scanner - the original proof of concept.',
+    url: 'https://github.com/canvascomputing/malwi-proof-of-concept',
+    languages: ['Python', 'JavaScript'],
+    org: 'canvascomputing',
+  },
+];
+
+const kyriCou: Repo[] = [
+  {
+    name: 'cryptography',
+    description: 'Cryptography tools and demonstrations.',
+    url: 'https://github.com/Kyri-Cou/cryptography',
+    pagesUrl: 'https://kyri-cou.github.io/cryptography/',
+    languages: ['JavaScript', 'HTML', 'CSS'],
+    org: 'Kyri-Cou',
+  },
+];
+
 const sections = [
   { title: 'Featured', repos: featured },
   { title: 'Games', repos: games },
   { title: 'Tools & Libraries', repos: tools },
   { title: 'Learning & Exercises', repos: learning },
+  { title: 'Canvas Computing', repos: canvasComputing },
+  { title: 'Kyri-Cou', repos: kyriCou },
 ];
 ---
 
@@ -242,6 +286,8 @@ const sections = [
             url={repo.url}
             pagesUrl={repo.pagesUrl}
             languages={repo.languages}
+            forkedFrom={repo.forkedFrom}
+            org={repo.org}
           />
         ))}
       </div>
