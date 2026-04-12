@@ -4,19 +4,22 @@ interface Props {
   description: string;
   url: string;
   pagesUrl?: string;
+  youtubeUrl?: string;
   languages: string[];
   forkedFrom?: string;
   org?: string;
+  featured?: boolean;
 }
 
-const { name, description, url, pagesUrl, languages, forkedFrom, org } = Astro.props;
+const { name, description, url, pagesUrl, youtubeUrl, languages, forkedFrom, org, featured } = Astro.props;
 ---
 
-<div class="project-card">
+<div class:list={['project-card', { 'project-card--featured': featured }]}>
   <div class="project-header">
     <h3><a href={url} target="_blank" rel="noopener noreferrer">{org ? `${org}/` : ''}{name}</a></h3>
     <div class="project-badges">
       {forkedFrom && <a href={`https://github.com/${forkedFrom}`} class="fork-badge" title={`Forked from ${forkedFrom}`} aria-label={`Forked from ${forkedFrom}`} target="_blank" rel="noopener noreferrer">fork</a>}
+      {youtubeUrl && <a href={youtubeUrl} class="youtube-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube channel">YouTube</a>}
       {pagesUrl && <a href={pagesUrl} class="live-link" target="_blank" rel="noopener noreferrer">Live</a>}
     </div>
   </div>
@@ -40,6 +43,11 @@ const { name, description, url, pagesUrl, languages, forkedFrom, org } = Astro.p
 
   .project-card:hover {
     border-color: var(--color-accent);
+  }
+
+  .project-card--featured {
+    border-color: var(--color-accent);
+    background: var(--color-surface);
   }
 
   .project-header {
@@ -70,6 +78,36 @@ const { name, description, url, pagesUrl, languages, forkedFrom, org } = Astro.p
     border-color: var(--color-accent);
     color: var(--color-accent);
     text-decoration: none;
+  }
+
+  .youtube-link {
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid #c00;
+    border-radius: 4px;
+    color: #c00;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .youtube-link {
+      color: #ff4d4d;
+      border-color: #ff4d4d;
+    }
+  }
+
+  .youtube-link:hover {
+    background: #c00;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .youtube-link:hover {
+      background: #ff4d4d;
+      color: #111;
+    }
   }
 
   .project-header h3 {

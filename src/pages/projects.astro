@@ -7,9 +7,11 @@ interface Repo {
   description: string;
   url: string;
   pagesUrl?: string;
+  youtubeUrl?: string;
   languages: string[];
   forkedFrom?: string;
   org?: string;
+  featured?: boolean;
 }
 
 const featured: Repo[] = [
@@ -22,7 +24,7 @@ const featured: Repo[] = [
   },
   {
     name: 'piper-recording-studio',
-    description: 'Local voice recording for creating Piper TTS datasets.',
+    description: 'Modified voice recording studio used to record final narration for the cryptography course. Because human voice matters.',
     url: 'https://github.com/leochilds/piper-recording-studio',
     languages: ['JavaScript', 'Python', 'HTML'],
     forkedFrom: 'rhasspy/piper-recording-studio',
@@ -41,7 +43,7 @@ const featured: Repo[] = [
   },
   {
     name: 'VoxCPM',
-    description: 'Tokenizer-Free TTS for context-aware speech generation and true-to-life voice cloning.',
+    description: 'AI voice cloning for fast iteration on video narration during cryptography course production.',
     url: 'https://github.com/leochilds/VoxCPM',
     languages: ['Python'],
     forkedFrom: 'OpenBMB/VoxCPM',
@@ -115,7 +117,7 @@ const tools: Repo[] = [
   },
   {
     name: 'manim',
-    description: 'Fork of the community-maintained Python framework for creating mathematical animations.',
+    description: 'Mathematical animation framework used to produce cryptography course videos as code.',
     url: 'https://github.com/leochilds/manim',
     languages: ['Python', 'GLSL'],
     forkedFrom: 'ManimCommunity/manim',
@@ -251,21 +253,23 @@ const canvasComputing: Repo[] = [
 const kyriCou: Repo[] = [
   {
     name: 'cryptography',
-    description: 'Cryptography tools and demonstrations.',
+    description: 'Interactive companion site for the free cryptography course on YouTube. Explore ciphers, learn how to break them, and play with the tools taught in each lesson -- all in the browser.',
     url: 'https://github.com/Kyri-Cou/cryptography',
     pagesUrl: 'https://kyri-cou.github.io/cryptography/',
+    youtubeUrl: 'https://www.youtube.com/@KyriAndCou',
     languages: ['JavaScript', 'HTML', 'CSS'],
     org: 'Kyri-Cou',
+    featured: true,
   },
 ];
 
 const sections = [
+  { title: 'Kyri & Cou', repos: kyriCou },
   { title: 'Featured', repos: featured },
   { title: 'Games', repos: games },
   { title: 'Tools & Libraries', repos: tools },
   { title: 'Learning & Exercises', repos: learning },
   { title: 'Canvas Computing', repos: canvasComputing },
-  { title: 'Kyri-Cou', repos: kyriCou },
 ];
 ---
 
@@ -285,9 +289,11 @@ const sections = [
             description={repo.description}
             url={repo.url}
             pagesUrl={repo.pagesUrl}
+            youtubeUrl={repo.youtubeUrl}
             languages={repo.languages}
             forkedFrom={repo.forkedFrom}
             org={repo.org}
+            featured={repo.featured}
           />
         ))}
       </div>
@@ -329,6 +335,10 @@ const sections = [
   @media (min-width: 520px) {
     .project-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-grid :global(.project-card--featured) {
+      grid-column: 1 / -1;
     }
   }
 </style>
