@@ -8,7 +8,9 @@ I've had a personal GitHub Pages site for years. It was always a bit of a chore 
 
 ## The rewrite
 
-The entire site was rewritten from scratch using [Claude Code](https://claude.com/claude-code) with Claude Opus. The old Jekyll setup was torn out and replaced with an [Astro](https://astro.build/) static site. Claude used the GitHub CLI to pull in all my public repositories, check which ones have live GitHub Pages deployments, identify forks and their upstream repos, and organise everything into categories. The whole thing -- layouts, styling, dark mode, blog infrastructure, GitHub Actions deployment -- was built in a single session.
+The entire site was rewritten from scratch using [Claude Code](https://claude.com/claude-code) with Claude Opus, replacing the old Jekyll setup with an [Astro](https://astro.build/) static site.
+
+Claude used the GitHub CLI to pull in all my public repositories, check which ones have live GitHub Pages deployments, identify forks and their upstream repos, and organise everything into categories. The whole thing -- layouts, styling, dark mode, blog infrastructure, and GitHub Actions deployment -- was built in a single session.
 
 ## The automation
 
