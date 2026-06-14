@@ -167,6 +167,30 @@ const sections = [
         ))}
       </div>
 
+      <aside class="moat">
+        <span class="moat-label mono">// the moat</span>
+        <p class="moat-statement">
+          Working with AI — <span class="accent">not behind it.</span>
+        </p>
+        <div class="moat-body">
+          <p>
+            In an age of vibe-coding, anyone can point a model at the same tools.
+            The advantage was never the AI; it's the human input — deep
+            experience in how people actually learn, real knowledge of the
+            subject, and the judgement to catch the model when it's confidently
+            wrong. The AI is a strong coder with vast knowledge, but like a
+            person it makes mistakes, so we check each other, continuously.
+          </p>
+          <p>
+            I shape the tools as much as I use them: customising each one to fit
+            how I work, and contributing improvements back upstream where the
+            original project would benefit. What can't be automated is the
+            teaching instinct, the eye for what lands with a human viewer, and —
+            where it counts — the voice, which is mine, recorded, not generated.
+          </p>
+        </div>
+        <a href="/work/cryptography" class="moat-link mono">See it in practice →</a>
+      </aside>
     </div>
   </section>
 
@@ -269,6 +293,10 @@ const sections = [
     max-width: 64ch;
     line-height: 1.7;
   }
+  .moat-body p { margin-bottom: 1rem; }
+  .moat-body p:last-child { margin-bottom: 0; }
+  .moat-link { display: inline-block; margin-top: 1.4rem; color: var(--accent); font-size: 0.66rem; }
+  .moat-link:hover { color: var(--accent-bright); }
 
   .work-grid {
     display: grid;
