@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+
+const channels = [
+  { label: 'Email', value: 'github.outthink378@passmail.net', href: 'mailto:github.outthink378@passmail.net', primary: true },
+  { label: 'GitHub', value: 'github.com/leochilds', href: 'https://github.com/leochilds' },
+  { label: 'YouTube', value: '@KyriAndCou', href: 'https://www.youtube.com/@KyriAndCou' },
+];
+---
+
+<Base title="Contact" description="Get in touch with Leo Childs — security, software, and systems consultancy.">
+  <section class="contact wrap">
+    <div class="contact-left">
+      <p class="eyebrow reveal"><span class="idx">CONNECT</span> Contact</p>
+      <h1 class="h-display reveal" style="animation-delay: 0.1s">
+        Let's talk.
+      </h1>
+      <p class="lead reveal" style="animation-delay: 0.18s">
+        The best way to reach me is email. Tell me a little about the problem —
+        what you're building, what's broken, or what you're trying to decide —
+        and I'll get back to you.
+      </p>
+      <p class="contact-note mono reveal" style="animation-delay: 0.26s">
+        <span class="status"><span class="dot" aria-hidden="true"></span></span>
+        Available for select work · UK · Remote
+      </p>
+    </div>
+
+    <div class="contact-right reveal" style="animation-delay: 0.2s">
+      <span class="channels-head mono">Channels</span>
+      <ul class="channels">
+        {channels.map((c) => (
+          <li>
+            <a
+              href={c.href}
+              class:list={['channel', { 'channel--primary': c.primary }]}
+              target={c.href.startsWith('http') ? '_blank' : undefined}
+              rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            >
+              <span class="channel-label mono">{c.label}</span>
+              <span class="channel-value">{c.value}</span>
+              <span class="channel-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    padding-top: clamp(3.5rem, 9vw, 6.5rem);
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+  .contact-left h1 { margin: 1.2rem 0 1.4rem; }
+  .contact-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+
+  .contact-right {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-1);
+    padding: 1.75rem;
+  }
+  .channels-head { color: var(--muted); display: block; margin-bottom: 1.25rem; }
+  .channels { list-style: none; display: flex; flex-direction: column; }
+
+  .channel {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'label arrow' 'value arrow';
+    align-items: center;
+    gap: 0.1rem 0.5rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line-soft);
+    color: var(--text);
+  }
+  .channels li:first-child .channel { border-top: none; }
+  .channel-label { grid-area: label; color: var(--muted); font-size: 0.6rem; }
+  .channel-value { grid-area: value; font-size: 1.02rem; font-weight: 500; }
+  .channel-arrow {
+    grid-area: arrow;
+    color: var(--muted);
+    transition: transform 0.2s, color 0.2s;
+  }
+  .channel:hover { color: var(--accent-bright); }
+  .channel:hover .channel-arrow { color: var(--accent); transform: translate(2px, -2px); }
+  .channel--primary .channel-value { color: var(--accent); }
+  .channel--primary:hover .channel-value { color: var(--accent-bright); }
+
+  @media (max-width: 760px) {
+    .contact { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>

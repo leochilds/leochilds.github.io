@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local reference material / private context — never publish
+reference/
+*.notes.md

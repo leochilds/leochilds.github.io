@@ -1,134 +1,357 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-).slice(0, 3);
+const services = [
+  {
+    idx: '01',
+    title: 'Cyber Security',
+    blurb:
+      'Threat modelling, security reviews, and hardening for teams that need to get serious without building a security org overnight.',
+  },
+  {
+    idx: '02',
+    title: 'Tech & Security for Startups',
+    blurb:
+      'Step-in CTO and Director-of-Engineering leadership for new ventures — architecture, security posture, hiring, and the right call on what to build versus buy.',
+  },
+  {
+    idx: '03',
+    title: 'Software & Application Development',
+    blurb:
+      'Design and delivery of production software, from greenfield products to the awkward integrations nobody else wants to touch.',
+  },
+];
+
+const selected = [
+  {
+    name: 'Cryptography Course',
+    org: 'Kyri & Cou',
+    badge: 'Course',
+    badgeClass: 'badge--course',
+    blurb:
+      'A free YouTube cryptography course with an interactive companion site — play with ciphers and breaking tools lesson by lesson.',
+    href: '/work/cryptography',
+  },
+  {
+    name: 'Engtec Solutions',
+    org: 'Co-founded venture',
+    badge: 'Venture',
+    badgeClass: 'badge--company',
+    blurb:
+      'An engineering training company I co-founded — accredited and operating. I built its curriculum and platform and lead direction as a director. Proof I build ventures, not just advise them.',
+    href: '/work/engtec',
+  },
+  {
+    name: 'Canvas Computing',
+    org: 'Affiliation',
+    badge: 'Affiliation',
+    badgeClass: 'badge--company',
+    blurb:
+      "I'm part of Canvas Computing, the team behind malwi — AI-driven detection of malicious code. I contribute, work closely with its maintainer, and vouch for these tools from real private use.",
+    href: 'https://github.com/canvascomputing',
+  },
+  {
+    name: 'Private security work',
+    org: 'Private',
+    badge: 'Private',
+    badgeClass: 'badge--private',
+    blurb:
+      'Security tooling I build and run privately — including a Rust desktop dashboard of security utilities and an end-to-end encrypted serverless chat. Described, source kept private.',
+    href: '/work',
+  },
+  {
+    name: 'learnyounode walkthrough',
+    org: 'Archived · ★59',
+    badge: 'Archived',
+    badgeClass: 'badge--archived',
+    blurb:
+      'Homemade walkthroughs for the learnyounode Node.js exercises — my most-starred project, and a marker of how far back my technical teaching goes.',
+    href: 'https://github.com/leochilds/learnyounode-walkthrough',
+  },
+];
 ---
 
 <Base title="Home">
-  <section class="hero">
-    <h1>Hey, I'm Leo.</h1>
-    <p>
-      I'm an engineer. Not as a job title &mdash; as a way of thinking.
+  <!-- ============ HERO ============ -->
+  <section class="hero wrap">
+    <p class="eyebrow reveal" style="animation-delay: 0.05s">
+      <span class="idx">PORTFOLIO</span> · SERVICES · FIELD NOTES
     </p>
-    <p>
-      To me, engineering comes down to two flavours of problem solving: fixing
-      things that are broken, and making things that work better. That pattern
-      doesn't change whether you're writing software, surveying geodetic data
-      on a construction site, or standing in front of a classroom. The
-      cognitive practice crosses every boundary people try to draw around it.
+
+    <h1 class="h-display hero-title reveal" style="animation-delay: 0.12s">
+      I fix what's broken<br />
+      and build what<br />
+      <span class="accent">works better.</span>
+    </h1>
+
+    <p class="lead reveal" style="animation-delay: 0.22s">
+      Engineer — not as a job title, as a way of thinking. I work across
+      security, software, and systems, mostly with new ventures who need it
+      done right the first time.
     </p>
-    <p>
-      I've been called a polymath, and maybe that's fair. I've brought software
-      engineering into civil engineering projects, security engineering into
-      cloud platforms, and all of the above into teaching &mdash; both in person
-      and online. I've founded companies and organisations, built them up, and
-      moved on once they could sustain themselves. With every new skill I aim to
-      learn deeply from both study and practice, then apply broadly.
-    </p>
-    <p>
-      People ask what kind of engineer. The honest answer is that the kind
-      matters less than the thinking. A mechanical engineer and a software
-      engineer solve problems differently in practice but identically in
-      pattern. I just happen to enjoy working across the whole spectrum.
-    </p>
-    <p>
-      Right now my biggest focus is a
-      <a href="https://www.youtube.com/@KyriAndCou" target="_blank" rel="noopener noreferrer">free cryptography course on YouTube</a>,
-      with an <a href="https://kyri-cou.github.io/cryptography/" target="_blank" rel="noopener noreferrer">interactive companion site</a>
-      where you can play with ciphers and breaking tools alongside each lesson.
-      The videos are produced as code with Manim, narration drafted with AI
-      voice cloning for fast iteration, then recorded properly &mdash; because
-      human voice matters.
-    </p>
-    <p>
-      This site is home to my <a href="/projects">projects</a> and an
-      occasional <a href="/blog">blog</a>. Who knows &mdash; maybe you'll want
-      me on your next project.
-    </p>
+
+    <div class="btn-row reveal" style="animation-delay: 0.3s">
+      <a href="/services" class="btn btn--primary">
+        Work with me <span class="arrow">→</span>
+      </a>
+      <a href="/work" class="btn">Selected work</a>
+    </div>
+
+    <dl class="hero-stats reveal" style="animation-delay: 0.4s">
+      <div>
+        <dt class="mono">Discipline</dt>
+        <dd>Security · Software · Systems</dd>
+      </div>
+      <div>
+        <dt class="mono">Engagements</dt>
+        <dd>Flat-rate, scoped per project</dd>
+      </div>
+      <div>
+        <dt class="mono">Based</dt>
+        <dd>United Kingdom · Remote</dd>
+      </div>
+    </dl>
   </section>
 
-  {posts.length > 0 && (
-    <section class="recent-posts">
-      <h2>Recent posts</h2>
-      <ul>
-        {posts.map((post) => (
-          <li>
-            <a href={`/blog/${post.id}`}>{post.data.title}</a>
-            <time datetime={post.data.date.toISOString()}>
-              {post.data.date.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })}
-            </time>
-          </li>
+  <!-- ============ THE MOAT ============ -->
+  <section class="section">
+    <div class="wrap">
+      <aside class="moat">
+        <span class="moat-label mono">// the moat</span>
+        <p class="moat-statement">
+          Working with AI — <span class="accent">not behind it.</span>
+        </p>
+        <p class="moat-body">
+          In an age of vibe-coding, anyone can point a model at the same tools.
+          The advantage isn't the AI; it's the human input — deep experience in
+          how people actually learn, real knowledge of the subject, and the
+          judgement to catch the model when it's confidently wrong. AI makes me
+          faster. The thinking, the quality, and — where it counts — the voice,
+          are mine.
+        </p>
+        <a href="/work/cryptography" class="moat-link mono">See it in practice →</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="idx">01</span> Services</p>
+        <a href="/services" class="head-link mono">All services →</a>
+      </div>
+      <h2 class="h-section">Flat-rate consultancy, no surprises.</h2>
+
+      <div class="grid-3">
+        {services.map((s) => (
+          <a href="/services" class="card service-card">
+            <span class="service-idx mono">{s.idx}</span>
+            <h3>{s.title}</h3>
+            <p>{s.blurb}</p>
+            <span class="card-cta mono">Learn more →</span>
+          </a>
         ))}
-      </ul>
-      <a href="/blog" class="see-all">All posts &rarr;</a>
-    </section>
-  )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SELECTED WORK ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="idx">02</span> Selected work</p>
+        <a href="/work" class="head-link mono">Full index →</a>
+      </div>
+      <h2 class="h-section">Projects of note.</h2>
+
+      <div class="grid-3">
+        {selected.map((p) => {
+          const external = /^https?:\/\//.test(p.href);
+          return (
+            <a
+              href={p.href}
+              class="card work-card"
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener noreferrer' : undefined}
+            >
+              <div class="work-top">
+                <span class={`badge ${p.badgeClass}`}>{p.badge}</span>
+                <span class="work-org mono">{p.org}</span>
+              </div>
+              <h3>{p.name}</h3>
+              <p>{p.blurb}</p>
+              <span class="card-cta mono">{external ? 'Visit ↗' : 'View →'}</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT CTA ============ -->
+  <section class="section cta-section">
+    <div class="wrap cta-inner">
+      <div>
+        <p class="eyebrow"><span class="idx">03</span> Contact</p>
+        <h2 class="h-section">Have a problem<br />worth solving?</h2>
+      </div>
+      <div class="cta-right">
+        <p class="prose">
+          Whether it's a security review, a startup that needs technical
+          ballast, or software that has to ship — tell me what you're working on.
+        </p>
+        <div class="btn-row">
+          <a href="mailto:github.outthink378@passmail.net" class="btn btn--primary">
+            github.outthink378@passmail.net <span class="arrow">→</span>
+          </a>
+          <a href="/contact" class="btn">All channels</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>
 
 <style>
+  /* ---- Hero ---- */
   .hero {
-    margin-bottom: 3rem;
+    padding-top: clamp(3.5rem, 9vw, 7rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
   }
-
-  .hero h1 {
-    font-size: 2.25rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
+  .hero-title {
+    margin: 1.4rem 0 1.6rem;
+    max-width: 16ch;
   }
-
-  .hero p {
-    font-size: 1.1rem;
-    color: var(--color-muted);
-    line-height: 1.7;
-    max-width: 580px;
-    margin-bottom: 0.75rem;
+  .hero-title .accent {
+    color: var(--accent);
+    position: relative;
   }
+  .lead { margin-bottom: 2rem; }
 
-  .hero p:last-child {
-    margin-bottom: 0;
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 3rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+    max-width: 760px;
   }
-
-  .recent-posts h2 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+  .hero-stats dt {
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
   }
-
-  .recent-posts ul {
-    list-style: none;
-  }
-
-  .recent-posts li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--color-border);
-    gap: 1rem;
-  }
-
-  .recent-posts li a {
-    color: var(--color-text);
+  .hero-stats dd {
+    font-size: 0.92rem;
+    color: var(--text);
     font-weight: 500;
   }
-
-  .recent-posts li a:hover {
-    color: var(--color-accent);
+  @media (max-width: 600px) {
+    .hero-stats { grid-template-columns: 1fr; gap: 1rem; }
   }
 
-  .recent-posts time {
-    color: var(--color-muted);
-    font-size: 0.85rem;
-    white-space: nowrap;
-    flex-shrink: 0;
+  /* ---- Moat statement ---- */
+  .moat {
+    padding: 2.5rem clamp(1.5rem, 4vw, 3.5rem);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(ellipse 80% 160% at 0% 0%, var(--accent-faint), transparent 55%),
+      var(--bg-1);
+  }
+  .moat-label { color: var(--accent); display: block; margin-bottom: 1rem; }
+  .moat-statement {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 1.1rem;
+  }
+  .moat-statement .accent { color: var(--accent); }
+  .moat-body {
+    color: var(--text-dim);
+    max-width: 66ch;
+    line-height: 1.75;
+    margin-bottom: 1.4rem;
+  }
+  .moat-link { color: var(--accent); font-size: 0.66rem; }
+  .moat-link:hover { color: var(--accent-bright); }
+
+  /* ---- Section heads ---- */
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+  }
+  .head-link { color: var(--muted); }
+  .head-link:hover { color: var(--accent); }
+  .h-section { margin-bottom: 2.25rem; }
+
+  /* ---- Grids ---- */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 820px) { .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ---- Service cards ---- */
+  .service-card { display: flex; flex-direction: column; min-height: 220px; }
+  .service-card .service-idx {
+    color: var(--accent);
+    font-size: 0.72rem;
+    margin-bottom: 1.2rem;
+  }
+  .service-card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .service-card p {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
+  }
+  .card-cta {
+    margin-top: 1.1rem;
+    color: var(--muted);
+    font-size: 0.64rem;
+    transition: color 0.2s;
+  }
+  .card:hover .card-cta { color: var(--accent); }
+
+  /* ---- Work cards ---- */
+  .work-card { display: flex; flex-direction: column; min-height: 230px; }
+  .work-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+  }
+  .work-org { font-size: 0.62rem; color: var(--muted); }
+  .work-card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: var(--text); }
+  .work-card p {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
   }
 
-  .see-all {
-    display: inline-block;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+  /* ---- CTA ---- */
+  .cta-section {
+    background:
+      radial-gradient(ellipse 70% 120% at 0% 50%, var(--accent-faint), transparent 60%);
+  }
+  .cta-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .cta-right .prose { margin-bottom: 1.5rem; }
+  @media (max-width: 760px) {
+    .cta-inner { grid-template-columns: 1fr; gap: 1.5rem; }
   }
 </style>

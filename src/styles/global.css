@@ -1,31 +1,41 @@
-:root {
-  --color-bg: #fafafa;
-  --color-text: #1a1a1a;
-  --color-muted: #666;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-border: #e5e5e5;
-  --color-surface: #fff;
-  --color-tag-bg: #f0f0f0;
-  --color-tag-text: #444;
-  --max-width: 720px;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
-}
+/* ============================================================
+   Leo Childs — engineering console
+   Dark technical / ops aesthetic. Built once, used everywhere.
+   ============================================================ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #111;
-    --color-text: #e5e5e5;
-    --color-muted: #999;
-    --color-accent: #60a5fa;
-    --color-accent-hover: #93bbfd;
-    --color-border: #2a2a2a;
-    --color-surface: #1a1a1a;
-    --color-tag-bg: #2a2a2a;
-    --color-tag-text: #ccc;
-  }
+:root {
+  /* Canvas */
+  --bg: #0a0c0d;
+  --bg-1: #0f1315;
+  --bg-2: #141a1d;
+  --bg-glass: rgba(10, 12, 13, 0.72);
+
+  /* Ink */
+  --text: #e9eff1;
+  --text-dim: #9aa7ab;
+  --muted: #67737a;
+
+  /* Lines */
+  --line: rgba(255, 255, 255, 0.09);
+  --line-soft: rgba(255, 255, 255, 0.045);
+
+  /* Signal — royal purple, used sparingly */
+  --accent: #8257ff;
+  --accent-bright: #a98cff;
+  --accent-dim: #5b39c9;
+  --accent-glow: rgba(130, 87, 255, 0.18);
+  --accent-faint: rgba(130, 87, 255, 0.09);
+  --on-accent: #f4f0ff;
+
+  /* Type */
+  --font-display: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Metrics */
+  --maxw: 1140px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --radius: 4px;
 }
 
 *,
@@ -37,52 +47,312 @@
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.6;
-  color: var(--color-text);
-  background: var(--color-bg);
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* ---- Atmosphere: fixed background field ---------------------- */
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* drafting grid */
+.bg-fx::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--line-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 85%);
+}
+
+/* signal glow */
+.bg-fx::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% -8%, var(--accent-glow), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 100% 0%, rgba(130, 87, 255, 0.06), transparent 55%);
+}
+
+/* grain */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Links --------------------------------------------------- */
 a {
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: none;
+  transition: color 0.18s ease;
+}
+a:hover { color: var(--accent-bright); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+::selection {
+  background: var(--accent);
+  color: #fff;
 }
 
-a:hover {
-  color: var(--color-accent-hover);
-  text-decoration: underline;
+/* ---- Layout primitives -------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+main { flex: 1; width: 100%; }
+
+.section {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+  border-top: 1px solid var(--line-soft);
+}
+.section:first-child { border-top: none; }
+
+/* ---- Mono eyebrow / labels ---------------------------------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eyebrow .idx { color: var(--accent); }
+.eyebrow::before {
+  content: '';
+  width: 1.6rem;
+  height: 1px;
+  background: var(--accent-dim);
 }
 
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- Headings ----------------------------------------------- */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.h-display {
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+.h-section {
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  letter-spacing: -0.025em;
+}
+
+.lead {
+  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 46ch;
+}
+
+.prose { color: var(--text-dim); max-width: 62ch; }
+.prose p { margin-bottom: 1rem; }
+.prose strong { color: var(--text); font-weight: 600; }
+
+/* ---- Buttons ------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.btn .arrow { transition: transform 0.2s ease; }
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-bright);
+  box-shadow: 0 0 0 1px var(--accent-faint), 0 8px 30px -12px var(--accent-glow);
+}
+.btn:hover .arrow { transform: translateX(3px); }
+
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.btn--primary:hover {
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+  color: #1a0b3d;
+  box-shadow: 0 10px 36px -10px var(--accent-glow);
+}
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* ---- Status dot --------------------------------------------- */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.status .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 var(--accent-glow);
+  animation: pulse 2.4s ease-out infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(130, 87, 255, 0.5); }
+  70% { box-shadow: 0 0 0 7px rgba(130, 87, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(130, 87, 255, 0); }
+}
+
+/* ---- Card (generic surface) --------------------------------- */
+.card {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent),
+    var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.45rem;
+  transition: border-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+.card:hover {
+  border-color: var(--accent);
+  background: var(--bg-2);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--accent-faint);
+}
+
+/* corner tick decoration */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px; right: -1px;
+  width: 12px; height: 12px;
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.card:hover::before { opacity: 1; }
+
+/* ---- Tags --------------------------------------------------- */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border: 1px solid var(--line);
+  padding: 0.18rem 0.5rem;
+  border-radius: 3px;
+}
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+}
+.badge--live { color: var(--accent); }
+.badge--archived { color: #8c7bb0; }
+.badge--private { color: #c79a6a; }
+.badge--course { color: #e06c8a; }
+.badge--company { color: #6aa0e0; }
+
+/* ---- Reveal on load ----------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes rise {
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- Misc text ---------------------------------------------- */
 code {
   font-family: var(--font-mono);
-  font-size: 0.9em;
-  background: var(--color-tag-bg);
-  padding: 0.15em 0.35em;
-  border-radius: 4px;
+  font-size: 0.85em;
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--accent-bright);
 }
-
 pre {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
   overflow-x: auto;
 }
+pre code { background: none; border: none; padding: 0; color: var(--text-dim); }
 
-pre code {
-  background: none;
-  padding: 0;
+hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; animation: none; }
+  .status .dot { animation: none; }
+  html { scroll-behavior: auto; }
 }
