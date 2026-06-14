@@ -30,6 +30,9 @@ const statusText =
   (status
     ? { live: 'Live', archived: 'Archived', private: 'Private', course: 'Course', company: 'Company' }[status]
     : null);
+
+const isExternal = href ? /^https?:\/\//.test(href) : false;
+const ctaLabel = isExternal ? 'View ↗' : 'View →';
 ---
 
 <div class:list={['card', 'pcard', { 'pcard--featured': featured, 'pcard--link': !!href }]}>
@@ -37,8 +40,8 @@ const statusText =
     <a
       class="pcard-overlay"
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
       aria-label={`${name} — open`}
     ></a>
   )}
@@ -57,15 +60,19 @@ const statusText =
     </div>
   )}
 
-  <div class="pcard-links">
-    {href && <span class="pcard-cta mono">View →</span>}
-    {liveUrl && (
-      <a class="pcard-link mono" href={liveUrl} target="_blank" rel="noopener noreferrer">Live ↗</a>
-    )}
-    {youtubeUrl && (
-      <a class="pcard-link mono yt" href={youtubeUrl} target="_blank" rel="noopener noreferrer">YouTube ↗</a>
-    )}
-  </div>
+  {(href || liveUrl || youtubeUrl) ? (
+    <div class="pcard-links">
+      {href && <span class="pcard-cta mono">{ctaLabel}</span>}
+      {liveUrl && (
+        <a class="pcard-link mono" href={liveUrl} target="_blank" rel="noopener noreferrer">Live ↗</a>
+      )}
+      {youtubeUrl && (
+        <a class="pcard-link mono yt" href={youtubeUrl} target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+      )}
+    </div>
+  ) : (
+    <span class="pcard-private mono">Source kept private</span>
+  )}
 </div>
 
 <style>
@@ -137,4 +144,5 @@ const statusText =
   }
   .pcard-link:hover { color: var(--accent); }
   .pcard-link.yt:hover { color: #ff5c5c; }
+  .pcard-private { margin-top: 1.1rem; font-size: 0.6rem; color: var(--muted); }
 </style>

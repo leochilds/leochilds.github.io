@@ -1,0 +1,443 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Find the latest *full lesson* (not a Short) at build time. We read the
+// channel RSS for recent uploads, then pick the newest whose duration clears
+// the Shorts ceiling. Everything is wrapped so a network hiccup in CI can
+// never fail the build — it just falls back to the last known lesson.
+const CHANNEL_ID = 'UCKWTNfBKMVPzy5JgEhC6Ghg';
+const MIN_LESSON_SECONDS = 180; // Shorts cap at 3 min; lessons run far longer
+const FALLBACK_LESSON = { id: 'xaMakOsS4ew', title: 'S-DES: Encrypt by Hand — Every Bit Shown' };
+
+function decodeEntities(s = '') {
+  return s
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x27;/g, "'");
+}
+
+async function fetchText(url, useUa = false) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 6000);
+  try {
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      headers: useUa ? { 'User-Agent': 'Mozilla/5.0' } : {},
+    });
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function findLatestLesson() {
+  try {
+    const rss = await fetchText(`https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`);
+    const entries = [...rss.matchAll(/<entry>([\s\S]*?)<\/entry>/g)]
+      .map((m) => {
+        const id = (m[1].match(/<yt:videoId>(.*?)<\/yt:videoId>/) || [])[1];
+        const title = (m[1].match(/<title>(.*?)<\/title>/) || [])[1];
+        return id ? { id, title: decodeEntities(title) } : null;
+      })
+      .filter(Boolean);
+
+    for (const entry of entries.slice(0, 8)) {
+      try {
+        const page = await fetchText(`https://www.youtube.com/watch?v=${entry.id}`, true);
+        const lm = page.match(/"lengthSeconds":"(\d+)"/);
+        if (lm) {
+          if (Number(lm[1]) >= MIN_LESSON_SECONDS) return entry;
+          continue; // confirmed Short — skip
+        }
+        // duration unreadable (e.g. consent page): fall back to title heuristic
+        if (!/#short/i.test(entry.title)) return entry;
+      } catch {
+        if (!/#short/i.test(entry.title)) return entry;
+      }
+    }
+  } catch {
+    /* fall through to fallback */
+  }
+  return FALLBACK_LESSON;
+}
+
+const lesson = await findLatestLesson();
+const latestEmbed = `https://www.youtube-nocookie.com/embed/${lesson.id}?rel=0`;
+
+const facts = [
+  { k: 'Role', v: 'Creator, engineer, narrator' },
+  { k: 'Output', v: 'YouTube series + companion site' },
+  { k: 'Status', v: 'Active · regular releases' },
+  { k: 'Repos', v: 'Companion site (public) · Studio (private)' },
+];
+
+const pipeline = [
+  { n: '01', t: 'Animate', d: 'Write the lesson as a Manim scene — every bit, step, and transition rendered as code.' },
+  { n: '02', t: 'Draft', d: 'VoxCPM generates an AI-voiced draft so timing and pacing can be locked before I record.' },
+  { n: '03', t: 'Record', d: 'I capture the real voiceover locally in Piper Recording Studio, prompt by prompt.' },
+  { n: '04', t: 'Re-time', d: 'Recordings are imported back into Manim, which re-times the animation to my actual delivery.' },
+  { n: '05', t: 'Companion', d: 'Each release ships an interactive page so viewers can work the concept themselves.' },
+];
+
+const tools = [
+  { name: 'Manim', note: 'Mathematical animation framework — the visual language of every lesson.' },
+  { name: 'Piper Recording Studio', note: 'Local, browser-based voice capture; a custom build for prompt-by-prompt recording.' },
+  { name: 'VoxCPM', note: 'Context-aware AI text-to-speech for fast, throwaway narration drafts.' },
+  { name: 'Custom workflows', note: 'Python scripts that move text and audio between the tools and auto-sync timing.' },
+];
+---
+
+<Base
+  title="Cryptography Course"
+  description="A free YouTube cryptography course with an interactive companion site — and the private studio that produces it. Built by Leo Childs."
+>
+  <article>
+    <!-- ============ HEADER ============ -->
+    <section class="proj-hero wrap">
+      <a href="/work" class="back mono reveal">← Work</a>
+      <p class="eyebrow reveal" style="animation-delay: 0.05s">
+        <span class="idx">PROJECT 01</span> Education · Cryptography
+      </p>
+      <h1 class="h-display reveal" style="animation-delay: 0.12s">
+        The Cryptography<br />Course.
+      </h1>
+      <p class="lead reveal" style="animation-delay: 0.2s">
+        A free YouTube series that teaches cryptography from first principles —
+        paired with an interactive companion site, and produced end-to-end in a
+        studio I built myself.
+      </p>
+
+      <div class="btn-row reveal" style="animation-delay: 0.28s">
+        <a href="https://www.youtube.com/@KyriAndCou" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+          Watch on YouTube <span class="arrow">↗</span>
+        </a>
+        <a href="https://kyri-cou.github.io/cryptography/" class="btn" target="_blank" rel="noopener noreferrer">
+          Companion site ↗
+        </a>
+      </div>
+
+      <dl class="facts reveal" style="animation-delay: 0.36s">
+        {facts.map((f) => (
+          <div>
+            <dt class="mono">{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- ============ LATEST VIDEO ============ -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><span class="idx">▶</span> Latest lesson</p>
+          <a href="https://www.youtube.com/@KyriAndCou" class="head-link mono" target="_blank" rel="noopener noreferrer">All videos ↗</a>
+        </div>
+        <div class="video-frame">
+          <iframe
+            src={latestEmbed}
+            title={`Latest lesson — ${lesson.title}`}
+            loading="lazy"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p class="video-note mono">
+          Now showing: “{lesson.title}” — the most recent full lesson on the channel.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="section">
+      <div class="wrap two-col">
+        <div>
+          <p class="eyebrow"><span class="idx">01</span> Overview</p>
+          <h2 class="h-section">A course you can touch.</h2>
+        </div>
+        <div class="prose lg">
+          <p>
+            Most cryptography teaching stops at the diagram. This course doesn't.
+            Every video builds a cipher from the ground up — and every video has
+            a companion page where you can run that cipher yourself, change the
+            inputs, and watch the consequences.
+          </p>
+          <p>
+            The latest example: the lessons on <strong>S-DES</strong>. The video
+            walks all eight bits through every step of the cipher; the companion
+            page then lets you do the same interactively — flip an input bit and
+            see exactly how it ripples through the key schedule, the rounds, and
+            the output.
+          </p>
+          <p>
+            The site builds progressively — Caesar and Vigenère, frequency and
+            chi-squared analysis, the Vernam one-time pad, real-world breaks like
+            WEP, and on into DES — with breaking tools sitting right alongside
+            each cipher.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TWO REPOS ============ -->
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow"><span class="idx">02</span> Two repositories</p>
+        <h2 class="h-section">The output, and the engine.</h2>
+
+        <div class="repo-grid">
+          <article class="card repo">
+            <div class="repo-top">
+              <span class="badge badge--course">Companion site</span>
+              <span class="mono repo-vis">Public</span>
+            </div>
+            <h3>Kyri-Cou / cryptography</h3>
+            <p>
+              The interactive companion to the channel — a static site of cipher
+              visualisations and breaking tools, one page per concept. Built with
+              vanilla JS and Vite, deployed to GitHub Pages, and updated with
+              every new video.
+            </p>
+            <div class="tag-row">
+              <span class="tag">JavaScript</span>
+              <span class="tag">Vite</span>
+              <span class="tag">GitHub Pages</span>
+            </div>
+            <div class="repo-links">
+              <a href="https://github.com/Kyri-Cou/cryptography" target="_blank" rel="noopener noreferrer" class="mono">Repository ↗</a>
+              <a href="https://kyri-cou.github.io/cryptography/" target="_blank" rel="noopener noreferrer" class="mono">Live site ↗</a>
+            </div>
+          </article>
+
+          <article class="card repo">
+            <div class="repo-top">
+              <span class="badge badge--private">Private</span>
+              <span class="mono repo-vis">Engine room</span>
+            </div>
+            <h3>Video Training Studio</h3>
+            <p>
+              The production pipeline behind the videos: open-source and custom
+              tooling wired into one repeatable workflow. It stays private because
+              it holds the raw construction of each video — my intellectual
+              property — but the <em>tooling</em> is not secret, and it's
+              described in full below.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Manim</span>
+              <span class="tag">Piper Studio</span>
+              <span class="tag">VoxCPM</span>
+              <span class="tag">Python</span>
+            </div>
+            <div class="repo-links">
+              <span class="mono repo-muted">Source kept private</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PIPELINE ============ -->
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow"><span class="idx">03</span> The pipeline</p>
+        <h2 class="h-section">Animate, draft, record, re-time.</h2>
+        <ol class="pipeline">
+          {pipeline.map((s) => (
+            <li class="pstep">
+              <span class="pstep-n mono">{s.n}</span>
+              <div>
+                <h3>{s.t}</h3>
+                <p>{s.d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="tools">
+          <span class="mono tools-head">Tooling, disclosed</span>
+          <div class="tools-grid">
+            {tools.map((t) => (
+              <div class="tool">
+                <span class="tool-name">{t.name}</span>
+                <span class="tool-note">{t.note}</span>
+              </div>
+            ))}
+          </div>
+          <p class="tools-foot">
+            I customise these tools as I go to fit the way I work — and where a
+            change would genuinely help the original project, I aim to send it
+            back upstream. Good tooling should improve for everyone who uses it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE MOAT ============ -->
+    <section class="section">
+      <div class="wrap">
+        <aside class="moat">
+          <span class="moat-label mono">// the moat</span>
+          <p class="moat-statement">
+            Working with AI — <span class="accent">not behind it.</span>
+          </p>
+          <div class="moat-body">
+            <p>
+              In an age of vibe-coding, anyone can point a model at these same
+              tools. The advantage was never the AI; it's the human input — deep
+              experience in how people actually learn, real knowledge of
+              cryptography and code, and the judgement to catch the model when
+              it's confidently wrong. The AI is a strong coder with vast
+              knowledge, but like a person it makes mistakes — so we check each
+              other, continuously.
+            </p>
+            <p>
+              I shape the tools as much as I use them: customising each one to
+              fit how I work, and contributing improvements back upstream where
+              the original project would benefit. What can't be automated is the
+              teaching instinct, the eye for what actually lands with a human
+              viewer, and the voice you hear — which is mine, recorded, not
+              generated.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="section cta-section">
+      <div class="wrap cta-inner">
+        <h2 class="h-section">Learn it by<br />playing with it.</h2>
+        <div>
+          <p class="prose">
+            New lessons land regularly. Watch the series on YouTube, then go and
+            break some ciphers on the companion site.
+          </p>
+          <div class="btn-row">
+            <a href="https://www.youtube.com/@KyriAndCou" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+              Subscribe <span class="arrow">↗</span>
+            </a>
+            <a href="https://kyri-cou.github.io/cryptography/" class="btn" target="_blank" rel="noopener noreferrer">
+              Open companion site ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .proj-hero {
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .back { color: var(--muted); font-size: 0.66rem; display: inline-block; margin-bottom: 1.75rem; }
+  .back:hover { color: var(--accent); }
+  .proj-hero h1 { margin: 1.2rem 0 1.4rem; }
+  .proj-hero .lead { margin-bottom: 2rem; }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+  .facts dt { font-size: 0.58rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .facts dd { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+  @media (max-width: 720px) { .facts { grid-template-columns: 1fr 1fr; gap: 1rem; } }
+
+  /* section heads */
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+  }
+  .head-link { color: var(--muted); }
+  .head-link:hover { color: var(--accent); }
+  .h-section { margin: 0.9rem 0 2rem; }
+
+  /* video */
+  .video-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,0.9), 0 0 0 1px var(--accent-faint);
+  }
+  .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .video-note { margin-top: 0.85rem; color: var(--muted); font-size: 0.6rem; text-transform: none; letter-spacing: 0.06em; }
+
+  /* overview two-col */
+  .two-col {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .two-col .h-section { margin-top: 0.9rem; }
+  .prose.lg { font-size: 1.02rem; line-height: 1.75; max-width: none; }
+  .prose.lg em { color: var(--text); font-style: italic; }
+  @media (max-width: 760px) { .two-col { grid-template-columns: 1fr; gap: 1.25rem; } }
+
+  /* repos */
+  .repo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .repo { display: flex; flex-direction: column; }
+  .repo:hover { transform: none; border-color: var(--line); background: var(--bg-1); box-shadow: none; }
+  .repo:hover::before { opacity: 0; }
+  .repo-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
+  .repo-vis { font-size: 0.6rem; color: var(--muted); }
+  .repo h3 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .repo p { color: var(--text-dim); font-size: 0.94rem; line-height: 1.6; margin-bottom: 1.1rem; flex: 1; }
+  .repo p em { color: var(--text); font-style: italic; }
+  .repo .tag-row { margin-bottom: 1.25rem; }
+  .repo-links { display: flex; gap: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--line-soft); }
+  .repo-links a { font-size: 0.62rem; }
+  .repo-muted { font-size: 0.62rem; color: var(--muted); }
+  @media (max-width: 760px) { .repo-grid { grid-template-columns: 1fr; } }
+
+  /* pipeline */
+  .pipeline { list-style: none; display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .pstep { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; padding: 1.4rem 1.6rem; background: var(--bg-1); border-top: 1px solid var(--line); }
+  .pstep:first-child { border-top: none; }
+  .pstep-n { color: var(--accent); font-size: 0.72rem; padding-top: 0.15rem; }
+  .pstep h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+  .pstep p { color: var(--text-dim); font-size: 0.92rem; line-height: 1.55; }
+
+  .tools { margin-top: 2rem; }
+  .tools-head { color: var(--muted); display: block; margin-bottom: 1rem; }
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .tool { background: var(--bg-1); padding: 1.2rem 1.4rem; display: flex; flex-direction: column; gap: 0.35rem; }
+  .tool-name { font-weight: 600; color: var(--accent-bright); font-size: 0.98rem; }
+  .tool-note { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+  .tools-foot { margin-top: 1.25rem; color: var(--text-dim); font-size: 0.92rem; line-height: 1.7; max-width: 64ch; }
+  @media (max-width: 620px) { .tools-grid { grid-template-columns: 1fr; } }
+
+  /* moat */
+  .moat {
+    padding: 2.5rem clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--radius);
+    background: radial-gradient(ellipse 80% 160% at 0% 0%, var(--accent-faint), transparent 55%), var(--bg-1);
+  }
+  .moat-label { color: var(--accent); display: block; margin-bottom: 1rem; }
+  .moat-statement {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(1.5rem, 3.4vw, 2.3rem); letter-spacing: -0.025em;
+    line-height: 1.1; margin-bottom: 1.1rem;
+  }
+  .moat-statement .accent { color: var(--accent); }
+  .moat-body { color: var(--text-dim); max-width: 66ch; line-height: 1.75; }
+  .moat-body p { margin-bottom: 1rem; }
+  .moat-body p:last-child { margin-bottom: 0; }
+
+  /* cta */
+  .cta-section { background: radial-gradient(ellipse 70% 120% at 0% 50%, var(--accent-faint), transparent 60%); }
+  .cta-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+  .cta-inner .prose { margin-bottom: 1.5rem; }
+  @media (max-width: 760px) { .cta-inner { grid-template-columns: 1fr; gap: 1.5rem; } }
+</style>
