@@ -1,0 +1,207 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const facts = [
+  { k: 'Role', v: 'Co-founder & Director' },
+  { k: 'Focus', v: 'Engineering training' },
+  { k: 'Status', v: 'Active · operating' },
+  { k: 'Intake', v: 'Low-volume, high-calibre' },
+];
+
+const built = [
+  { name: 'ePortfolio system', note: 'A platform I built for cohort delivery — secure access gateways and automation for record-keeping and evidencing.' },
+  { name: 'Online theory videos', note: 'Training videos students use for the theory side of the course — the same production craft as my other teaching.' },
+  { name: 'Curriculum & accreditation', note: 'I wrote the curriculum and ran the pilot cohort; the centre has held accreditation for years.' },
+  { name: 'Direction & quality', note: 'I continue to lead direction as a director focused on service quality and innovation.' },
+];
+---
+
+<Base
+  title="Engtec Solutions"
+  description="Engtec Solutions — an engineering training company Leo Childs co-founded, delivering a nationally accredited engineering-surveying qualification to a small, high-calibre intake."
+>
+  <article>
+    <!-- ============ HEADER ============ -->
+    <section class="proj-hero wrap">
+      <a href="/work" class="back mono reveal">← Work</a>
+      <p class="eyebrow reveal" style="animation-delay: 0.05s">
+        <span class="idx">PROJECT 02</span> Venture · Engineering training
+      </p>
+      <h1 class="h-display reveal" style="animation-delay: 0.12s">
+        Engtec<br />Solutions.
+      </h1>
+      <p class="lead reveal" style="animation-delay: 0.2s">
+        An engineering training company I co-founded — built on the conviction
+        that a trade is best taught by people who hold themselves to a higher
+        standard than the qualification asks for.
+      </p>
+
+      <div class="btn-row reveal" style="animation-delay: 0.28s">
+        <a href="https://engtec.uk" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+          Visit engtec.uk <span class="arrow">↗</span>
+        </a>
+        <a href="/services" class="btn">My services</a>
+      </div>
+
+      <dl class="facts reveal" style="animation-delay: 0.36s">
+        {facts.map((f) => (
+          <div>
+            <dt class="mono">{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- ============ ORIGIN ============ -->
+    <section class="section">
+      <div class="wrap two-col">
+        <div>
+          <p class="eyebrow"><span class="idx">01</span> Origin</p>
+          <h2 class="h-section">Software, meet the building site.</h2>
+        </div>
+        <div class="prose lg">
+          <p>
+            My route in wasn't the classroom — it was the building site. Working
+            in engineering surveying on major UK construction projects, I did the
+            job two ways at once: to the site teams I was a surveyor; underneath,
+            I was automating the work.
+          </p>
+          <p>
+            I built automations that transformed and auto-reported survey data,
+            and generated instructions for robotic setting-out. The result was
+            <strong>force multiplication</strong> — a small team collecting more
+            data, to a higher standard, than the headcount should have allowed.
+            Site operations were far less digitised than the industry liked to
+            claim, and that gap was the opportunity.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE COMPANY ============ -->
+    <section class="section">
+      <div class="wrap two-col">
+        <div>
+          <p class="eyebrow"><span class="idx">02</span> The company</p>
+          <h2 class="h-section">Training, done properly.</h2>
+        </div>
+        <div class="prose lg">
+          <p>
+            When a new accredited qualification arrived for engineering
+            surveying, the training around it was thin and inconsistent. I knew
+            it could be delivered to a far higher standard — and I knew my own
+            lane. My specialism is software and security; teaching a
+            civil-engineering trade to mastery needed a veteran of that field
+            beside me. So I co-founded Engtec Solutions with exactly that partner.
+          </p>
+          <p>
+            I produced the curriculum and we ran a pilot cohort through it; the
+            centre has since held accreditation for years. Engtec runs a
+            deliberately <strong>low-volume, high-quality</strong> pipeline — I'd
+            rather turn out a few genuinely excellent engineers than process a
+            crowd. It's a real, operating company that employs people, and my
+            first true start-up.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHAT I BUILT ============ -->
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow"><span class="idx">03</span> What I do here</p>
+        <h2 class="h-section">Strategy, platform, and standards.</h2>
+        <div class="built-grid">
+          {built.map((b) => (
+            <div class="built">
+              <span class="built-name">{b.name}</span>
+              <span class="built-note">{b.note}</span>
+            </div>
+          ))}
+        </div>
+        <p class="built-foot">
+          The public website I maintain rather than built — the platform and
+          delivery systems are the part that's mine.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="section cta-section">
+      <div class="wrap cta-inner">
+        <h2 class="h-section">Proof, not<br />just pitch.</h2>
+        <div>
+          <p class="prose">
+            Engtec is the clearest example of the work I offer others: founding a
+            venture, building its technology, and holding the whole thing to an
+            engineer's standard. If that's the help you need, let's talk.
+          </p>
+          <div class="btn-row">
+            <a href="/services" class="btn btn--primary">
+              My services <span class="arrow">→</span>
+            </a>
+            <a href="https://engtec.uk" class="btn" target="_blank" rel="noopener noreferrer">
+              Visit engtec.uk ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .proj-hero {
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .back { color: var(--muted); font-size: 0.66rem; display: inline-block; margin-bottom: 1.75rem; }
+  .back:hover { color: var(--accent); }
+  .proj-hero h1 { margin: 1.2rem 0 1.4rem; }
+  .proj-hero .lead { margin-bottom: 2rem; }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+  .facts dt { font-size: 0.58rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .facts dd { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+  @media (max-width: 720px) { .facts { grid-template-columns: 1fr 1fr; gap: 1rem; } }
+
+  .h-section { margin: 0.9rem 0 2rem; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .two-col .h-section { margin-top: 0.9rem; }
+  .prose.lg { font-size: 1.02rem; line-height: 1.75; max-width: none; }
+  @media (max-width: 760px) { .two-col { grid-template-columns: 1fr; gap: 1.25rem; } }
+
+  .built-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .built { background: var(--bg-1); padding: 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .built-name { font-weight: 600; color: var(--accent-bright); font-size: 1rem; }
+  .built-note { color: var(--text-dim); font-size: 0.88rem; line-height: 1.55; }
+  .built-foot { margin-top: 1.25rem; color: var(--muted); font-size: 0.82rem; line-height: 1.6; max-width: 60ch; }
+  @media (max-width: 620px) { .built-grid { grid-template-columns: 1fr; } }
+
+  .cta-section { background: radial-gradient(ellipse 70% 120% at 0% 50%, var(--accent-faint), transparent 60%); }
+  .cta-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+  .cta-inner .prose { margin-bottom: 1.5rem; }
+  @media (max-width: 760px) { .cta-inner { grid-template-columns: 1fr; gap: 1.5rem; } }
+</style>

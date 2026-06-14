@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local content notes / private context — never publish
+engtec-solutions.md
+*.notes.md
