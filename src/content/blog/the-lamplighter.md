@@ -4,7 +4,7 @@ date: 2026-06-14
 description: "Half my life as a paid engineer — and the shift that interests me most: learning to work with AI as a partner, not a rival."
 ---
 
-I built my first website at eleven. At thirteen, someone paid me to do it again. By sixteen I'd started calling myself an engineer, and I've never really stopped — across more fields than I ever expected to touch. I won't tell you my age, but I'll tell you this: I've been a paid engineer for half of my life.
+I built my first website at eleven. At thirteen, someone paid me to do it again. By sixteen I'd started calling myself an engineer, and I've never really stopped — across more fields than I ever expected to touch. I won't tell you my age, but I'll tell you this: I've been a paid engineer for a very long time.
 
 In that time I've worked just about every way there is to work — employed, contracted, freelance, ad-hoc, on my own ventures, and a few arrangements I'll politely call clandestine (nothing illegal, I promise). The titles changed, the clients changed, the stack changed more times than I can count. One thing never did: I love writing code. Scripts, tools, whole applications — the act of building something that works is, to me, its own reward.
 
@@ -27,3 +27,7 @@ Because some skills are allowed to die. Who here knows a lamplighter? Once, ever
 And none of this is really about AI. It's about technological innovation, which has always asked the same thing of us: a little courage to set down the old tool and pick up the new one.
 
 I just happen to enjoy the new one.
+
+---
+
+*Ideas, argument and voice by **Leo Childs**. Drafting and prose by **Opus** (Claude). The final read, and the final word, were human.*
