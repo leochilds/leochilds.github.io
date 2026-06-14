@@ -33,22 +33,31 @@ const selected = [
     href: '/work/cryptography',
   },
   {
-    name: 'malwi',
-    org: 'Security research',
-    badge: 'Live',
-    badgeClass: 'badge--live',
+    name: 'Canvas Computing',
+    org: 'Affiliation',
+    badge: 'Affiliation',
+    badgeClass: 'badge--company',
     blurb:
-      'Runtime malware detection that intercepts Python, Node and Bash code as it executes — catching supply-chain attacks in the act.',
-    href: 'https://github.com/leochilds/malwi-1',
+      "I'm part of Canvas Computing, the team behind malwi — AI-driven detection of malicious code. I contribute, work closely with its maintainer, and vouch for these tools from real private use.",
+    href: 'https://github.com/canvascomputing',
   },
   {
-    name: 'LionPDF',
-    org: 'Open source',
-    badge: 'Live',
-    badgeClass: 'badge--live',
+    name: 'Private security work',
+    org: 'Private',
+    badge: 'Private',
+    badgeClass: 'badge--private',
     blurb:
-      'A privacy-first desktop PDF reader built with Tauri, Rust and React. Local by default, nothing phones home.',
-    href: 'https://github.com/leochilds/LionPDF',
+      'Security tooling I build and run privately — including a Rust desktop dashboard of security utilities and an end-to-end encrypted serverless chat. Described, source kept private.',
+    href: '/work',
+  },
+  {
+    name: 'learnyounode walkthrough',
+    org: 'Archived · ★59',
+    badge: 'Archived',
+    badgeClass: 'badge--archived',
+    blurb:
+      'Homemade walkthroughs for the learnyounode Node.js exercises — my most-starred project, and a marker of how far back my technical teaching goes.',
+    href: 'https://github.com/leochilds/learnyounode-walkthrough',
   },
 ];
 ---
@@ -147,7 +156,7 @@ const selected = [
       </div>
       <h2 class="h-section">Projects of note.</h2>
 
-      <div class="grid-3">
+      <div class="grid-2">
         {selected.map((p) => {
           const external = /^https?:\/\//.test(p.href);
           return (
@@ -281,6 +290,13 @@ const selected = [
     gap: 1rem;
   }
   @media (max-width: 820px) { .grid-3 { grid-template-columns: 1fr; } }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
 
   /* ---- Service cards ---- */
   .service-card { display: flex; flex-direction: column; min-height: 220px; }

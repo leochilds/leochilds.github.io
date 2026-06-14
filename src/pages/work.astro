@@ -32,38 +32,48 @@ const focus = [
 
 const ofNote = [
   {
-    name: 'malwi',
-    meta: 'Security research',
-    status: 'live',
+    name: 'Canvas Computing',
+    meta: 'Affiliation · security',
+    status: 'company',
+    statusLabel: 'Affiliation',
     description:
-      'Runtime malware detection that intercepts Python, Node.js and Bash code as it executes — built to catch supply-chain attacks in the act rather than after the fact.',
-    tags: ['Rust', 'Security', 'Static analysis'],
-    href: 'https://github.com/leochilds/malwi-1',
+      "I'm part of Canvas Computing, the team behind malwi — AI-driven detection of malicious code. I contribute where I can and work closely with its maintainer; just as important, I can vouch for these tools from the inside, relying on them in a private security context I'm not able to name.",
+    tags: ['Security', 'AI', 'Rust'],
+    href: 'https://github.com/canvascomputing',
   },
   {
-    name: 'LionPDF',
-    meta: 'Open source',
-    status: 'live',
-    description:
-      'A privacy-first desktop PDF reader built with Tauri, Rust and React. Local-by-default — nothing phones home.',
-    tags: ['Rust', 'Tauri', 'React'],
-    href: 'https://github.com/leochilds/LionPDF',
-  },
-  {
-    name: '[Private engagement]',
-    meta: 'Private · placeholder',
+    name: 'Security utilities dashboard',
+    meta: 'Private',
     status: 'private',
     description:
-      'Placeholder for a notable private or client project. Replace with a sanitised case study — what the problem was, what was delivered, and the outcome.',
-    tags: ['Security', 'Architecture'],
+      'A native desktop dashboard, written in Rust, that gathers a set of small security-oriented utilities behind a single launchpad — open several tools side by side to prototype and demonstrate ideas. Built privately.',
+    tags: ['Rust', 'Slint', 'Security'],
   },
   {
-    name: '[Archived project]',
-    meta: 'Archived · placeholder',
+    name: 'End-to-end encrypted chat',
+    meta: 'Private',
+    status: 'private',
+    description:
+      'A secure, real-time chat application built entirely on serverless AWS — WebSocket APIs, Lambda, DynamoDB, CDK — with confidentiality and integrity as the design priority. Built privately.',
+    tags: ['AWS', 'Serverless', 'Security'],
+  },
+  {
+    name: 'Security-certification auditing',
+    meta: 'Private',
+    status: 'private',
+    description:
+      "An AI agent that audits suppliers' security certifications — focused on ISO 27001 and SOC 2 — researching the web, extracting findings, and tracking certification expiry automatically. Built privately.",
+    tags: ['AI', 'Compliance', 'Python'],
+  },
+  {
+    name: 'learnyounode walkthrough',
+    meta: 'Archived · ★59',
     status: 'archived',
     description:
-      'Placeholder for an older archived project worth showing. Archived does not mean unimportant — pick one that demonstrates range or a lesson learned.',
-    tags: ['Legacy'],
+      'Homemade walkthroughs for the learnyounode Node.js exercises — my most-starred project, from the Founders & Coders second cohort. A marker of how far back my technical teaching goes; the work stands on its own.',
+    tags: ['Node.js', 'Teaching'],
+    href: 'https://github.com/leochilds/learnyounode-walkthrough',
+    liveUrl: 'https://leochilds.github.io/learnyounode-walkthrough/',
   },
 ];
 
@@ -87,14 +97,13 @@ const tooling = [
     href: 'https://github.com/leochilds/serverless-event-driven-starter-app',
   },
   {
-    name: 'library',
-    meta: 'Open source',
+    name: 'typescript-starter',
+    meta: 'Open source · ★1',
     status: 'live',
     description:
-      'An offline-first PWA for storing, searching and managing a large personal book collection.',
-    tags: ['TypeScript', 'PWA'],
-    href: 'https://github.com/leochilds/library',
-    liveUrl: 'https://leochilds.github.io/library/',
+      'A TypeScript starter template with sensible defaults — the base I reach for when spinning up something new.',
+    tags: ['TypeScript', 'Shell'],
+    href: 'https://github.com/leochilds/typescript-starter',
   },
 ];
 
