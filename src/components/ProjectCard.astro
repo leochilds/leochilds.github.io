@@ -30,6 +30,9 @@ const statusText =
   (status
     ? { live: 'Live', archived: 'Archived', private: 'Private', course: 'Course', company: 'Company' }[status]
     : null);
+
+const isExternal = href ? /^https?:\/\//.test(href) : false;
+const ctaLabel = isExternal ? 'View ↗' : 'View →';
 ---
 
 <div class:list={['card', 'pcard', { 'pcard--featured': featured, 'pcard--link': !!href }]}>
@@ -37,8 +40,8 @@ const statusText =
     <a
       class="pcard-overlay"
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
       aria-label={`${name} — open`}
     ></a>
   )}
@@ -58,7 +61,7 @@ const statusText =
   )}
 
   <div class="pcard-links">
-    {href && <span class="pcard-cta mono">View →</span>}
+    {href && <span class="pcard-cta mono">{ctaLabel}</span>}
     {liveUrl && (
       <a class="pcard-link mono" href={liveUrl} target="_blank" rel="noopener noreferrer">Live ↗</a>
     )}

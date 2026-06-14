@@ -30,7 +30,7 @@ const selected = [
     badgeClass: 'badge--course',
     blurb:
       'A free YouTube cryptography course with an interactive companion site — play with ciphers and breaking tools lesson by lesson.',
-    href: 'https://kyri-cou.github.io/cryptography/',
+    href: '/work/cryptography',
   },
   {
     name: 'malwi',
@@ -95,6 +95,27 @@ const selected = [
     </dl>
   </section>
 
+  <!-- ============ THE MOAT ============ -->
+  <section class="section">
+    <div class="wrap">
+      <aside class="moat">
+        <span class="moat-label mono">// the moat</span>
+        <p class="moat-statement">
+          Working with AI — <span class="accent">not behind it.</span>
+        </p>
+        <p class="moat-body">
+          In an age of vibe-coding, anyone can point a model at the same tools.
+          The advantage isn't the AI; it's the human input — deep experience in
+          how people actually learn, real knowledge of the subject, and the
+          judgement to catch the model when it's confidently wrong. AI makes me
+          faster. The thinking, the quality, and — where it counts — the voice,
+          are mine.
+        </p>
+        <a href="/work/cryptography" class="moat-link mono">See it in practice →</a>
+      </aside>
+    </div>
+  </section>
+
   <!-- ============ SERVICES ============ -->
   <section class="section">
     <div class="wrap">
@@ -127,17 +148,25 @@ const selected = [
       <h2 class="h-section">Projects of note.</h2>
 
       <div class="grid-3">
-        {selected.map((p) => (
-          <a href={p.href} class="card work-card" target="_blank" rel="noopener noreferrer">
-            <div class="work-top">
-              <span class={`badge ${p.badgeClass}`}>{p.badge}</span>
-              <span class="work-org mono">{p.org}</span>
-            </div>
-            <h3>{p.name}</h3>
-            <p>{p.blurb}</p>
-            <span class="card-cta mono">Visit →</span>
-          </a>
-        ))}
+        {selected.map((p) => {
+          const external = /^https?:\/\//.test(p.href);
+          return (
+            <a
+              href={p.href}
+              class="card work-card"
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener noreferrer' : undefined}
+            >
+              <div class="work-top">
+                <span class={`badge ${p.badgeClass}`}>{p.badge}</span>
+                <span class="work-org mono">{p.org}</span>
+              </div>
+              <h3>{p.name}</h3>
+              <p>{p.blurb}</p>
+              <span class="card-cta mono">{external ? 'Visit ↗' : 'View →'}</span>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -203,6 +232,35 @@ const selected = [
   @media (max-width: 600px) {
     .hero-stats { grid-template-columns: 1fr; gap: 1rem; }
   }
+
+  /* ---- Moat statement ---- */
+  .moat {
+    padding: 2.5rem clamp(1.5rem, 4vw, 3.5rem);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(ellipse 80% 160% at 0% 0%, var(--accent-faint), transparent 55%),
+      var(--bg-1);
+  }
+  .moat-label { color: var(--accent); display: block; margin-bottom: 1rem; }
+  .moat-statement {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 1.1rem;
+  }
+  .moat-statement .accent { color: var(--accent); }
+  .moat-body {
+    color: var(--text-dim);
+    max-width: 66ch;
+    line-height: 1.75;
+    margin-bottom: 1.4rem;
+  }
+  .moat-link { color: var(--accent); font-size: 0.66rem; }
+  .moat-link:hover { color: var(--accent-bright); }
 
   /* ---- Section heads ---- */
   .section-head {

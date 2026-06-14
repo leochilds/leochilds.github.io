@@ -2,22 +2,35 @@
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 
-// NOTE: content is curated, not exhaustive. Some entries below are placeholders
-// to be confirmed/replaced in the content pass. Quality over coverage.
+// NOTE: "Current focus" is real, confirmed content. Sections below it still
+// contain curated real projects plus a few [placeholder] entries to replace
+// in later content passes. Quality over coverage.
 
-const ofNote = [
+// --- Current focus: the two most relevant active projects ---
+const focus = [
   {
     name: 'Cryptography Course',
-    meta: 'Kyri & Cou · ongoing',
+    meta: 'Kyri & Cou · live',
     status: 'course',
     description:
-      'A free YouTube cryptography course with an interactive companion site. Videos are produced as code with Manim; lessons pair with browser tools to play with ciphers and break them.',
-    tags: ['Education', 'Manim', 'JavaScript'],
-    href: 'https://github.com/Kyri-Cou/cryptography',
+      'A free YouTube cryptography series with a companion site that makes every episode hands-on. Each new video adds an interactive page for the concept it covers — the latest, on S-DES, runs all eight bits through every step of the cipher so you can change the input and watch the change propagate. The site builds from Caesar and Vigenère up through one-time pads, WEP and DES, with breaking tools alongside each cipher.',
+    tags: ['Cryptography', 'Education', 'Interactive'],
+    href: '/work/cryptography',
     liveUrl: 'https://kyri-cou.github.io/cryptography/',
     youtubeUrl: 'https://www.youtube.com/@KyriAndCou',
-    featured: true,
   },
+  {
+    name: 'Video Training Studio',
+    meta: 'Private · the engine room',
+    status: 'private',
+    description:
+      'The engine behind the course: a pipeline of open-source and custom tooling. Manim renders the animations, a local build of Piper Recording Studio captures my real voice, and VoxCPM generates fast AI-voiced drafts so timing is locked before I record. Animate → draft → record → auto re-time. Private because it holds the raw construction of the videos — my IP — not because the tooling is secret.',
+    tags: ['Manim', 'Piper Studio', 'VoxCPM', 'Python'],
+    href: '/work/cryptography',
+  },
+];
+
+const ofNote = [
   {
     name: 'malwi',
     meta: 'Security research',
@@ -54,7 +67,7 @@ const ofNote = [
   },
 ];
 
-const current = [
+const tooling = [
   {
     name: 'web-to-markdown-crawler',
     meta: 'Open source',
@@ -115,13 +128,13 @@ const beyond = [
 ];
 
 const sections = [
-  { idx: '01', title: 'Projects of note', desc: 'The work I would point to first — including private and archived.', items: ofNote },
-  { idx: '02', title: 'Current & active', desc: 'What is live and getting attention right now.', items: current },
-  { idx: '03', title: 'Beyond GitHub', desc: 'Engineering that does not live in a repository.', items: beyond },
+  { idx: '02', title: 'Projects of note', desc: 'Work I would point to first — including private and archived.', items: ofNote },
+  { idx: '03', title: 'Tooling & open source', desc: 'Smaller public repositories and starters.', items: tooling },
+  { idx: '04', title: 'Beyond GitHub', desc: 'Engineering that does not live in a repository.', items: beyond },
 ];
 ---
 
-<Base title="Work" description="Selected work by Leo Childs — projects of note across security, software, and systems.">
+<Base title="Work" description="Selected work by Leo Childs — a free cryptography course and the studio behind it, plus security and software projects of note.">
   <section class="work-hero wrap">
     <p class="eyebrow reveal"><span class="idx">INDEX</span> Work</p>
     <h1 class="h-display reveal" style="animation-delay: 0.1s">Selected work.</h1>
@@ -129,6 +142,32 @@ const sections = [
       A curated set, not a feed. Focused projects of note — current and
       archived, public and private, code and otherwise.
     </p>
+  </section>
+
+  <!-- ============ CURRENT FOCUS ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow"><span class="idx">01</span> Current focus</p>
+        <span class="head-note mono">A free cryptography course — and the studio that produces it.</span>
+      </div>
+
+      <div class="focus-grid">
+        {focus.map((item) => (
+          <ProjectCard
+            name={item.name}
+            description={item.description}
+            meta={item.meta}
+            status={item.status as any}
+            tags={item.tags}
+            href={(item as any).href}
+            liveUrl={(item as any).liveUrl}
+            youtubeUrl={(item as any).youtubeUrl}
+          />
+        ))}
+      </div>
+
+    </div>
   </section>
 
   {sections.map((section) => (
@@ -150,7 +189,6 @@ const sections = [
               href={(item as any).href}
               liveUrl={(item as any).liveUrl}
               youtubeUrl={(item as any).youtubeUrl}
-              featured={(item as any).featured}
             />
           ))}
         </div>
@@ -191,8 +229,45 @@ const sections = [
     color: var(--muted);
     text-transform: none;
     letter-spacing: 0.04em;
-    max-width: 34ch;
+    max-width: 36ch;
     text-align: right;
+  }
+
+  /* Current focus — two larger flagship cards */
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .focus-grid :global(.pcard) { min-height: 300px; }
+  .focus-grid :global(.pcard-name) { font-size: 1.45rem; }
+  .focus-grid :global(.pcard-desc) { font-size: 0.96rem; }
+
+  /* Moat statement */
+  .moat {
+    margin-top: 1rem;
+    padding: 2.25rem clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(ellipse 80% 160% at 0% 0%, var(--accent-faint), transparent 55%),
+      var(--bg-1);
+  }
+  .moat-label { color: var(--accent); display: block; margin-bottom: 1rem; }
+  .moat-statement {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .moat-statement .accent { color: var(--accent); }
+  .moat-body {
+    color: var(--text-dim);
+    max-width: 64ch;
+    line-height: 1.7;
   }
 
   .work-grid {
@@ -200,15 +275,9 @@ const sections = [
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
-  .work-grid :global(.pcard--featured) {
-    grid-column: 1 / -1;
-    min-height: 200px;
-  }
-  .work-grid :global(.pcard--featured .pcard-desc) {
-    max-width: 60ch;
-    font-size: 1rem;
-  }
+
   @media (max-width: 820px) {
+    .focus-grid { grid-template-columns: 1fr; }
     .work-grid { grid-template-columns: 1fr; }
     .head-note { text-align: left; }
   }
