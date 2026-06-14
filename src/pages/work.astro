@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+// NOTE: content is curated, not exhaustive. Some entries below are placeholders
+// to be confirmed/replaced in the content pass. Quality over coverage.
+
+const ofNote = [
+  {
+    name: 'Cryptography Course',
+    meta: 'Kyri & Cou · ongoing',
+    status: 'course',
+    description:
+      'A free YouTube cryptography course with an interactive companion site. Videos are produced as code with Manim; lessons pair with browser tools to play with ciphers and break them.',
+    tags: ['Education', 'Manim', 'JavaScript'],
+    href: 'https://github.com/Kyri-Cou/cryptography',
+    liveUrl: 'https://kyri-cou.github.io/cryptography/',
+    youtubeUrl: 'https://www.youtube.com/@KyriAndCou',
+    featured: true,
+  },
+  {
+    name: 'malwi',
+    meta: 'Security research',
+    status: 'live',
+    description:
+      'Runtime malware detection that intercepts Python, Node.js and Bash code as it executes — built to catch supply-chain attacks in the act rather than after the fact.',
+    tags: ['Rust', 'Security', 'Static analysis'],
+    href: 'https://github.com/leochilds/malwi-1',
+  },
+  {
+    name: 'LionPDF',
+    meta: 'Open source',
+    status: 'live',
+    description:
+      'A privacy-first desktop PDF reader built with Tauri, Rust and React. Local-by-default — nothing phones home.',
+    tags: ['Rust', 'Tauri', 'React'],
+    href: 'https://github.com/leochilds/LionPDF',
+  },
+  {
+    name: '[Private engagement]',
+    meta: 'Private · placeholder',
+    status: 'private',
+    description:
+      'Placeholder for a notable private or client project. Replace with a sanitised case study — what the problem was, what was delivered, and the outcome.',
+    tags: ['Security', 'Architecture'],
+  },
+  {
+    name: '[Archived project]',
+    meta: 'Archived · placeholder',
+    status: 'archived',
+    description:
+      'Placeholder for an older archived project worth showing. Archived does not mean unimportant — pick one that demonstrates range or a lesson learned.',
+    tags: ['Legacy'],
+  },
+];
+
+const current = [
+  {
+    name: 'web-to-markdown-crawler',
+    meta: 'Open source',
+    status: 'live',
+    description:
+      'A crawler that converts site contents to clean markdown and rewrites relative links — useful for feeding documentation to LLMs.',
+    tags: ['TypeScript'],
+    href: 'https://github.com/leochilds/web-to-markdown-crawler',
+  },
+  {
+    name: 'serverless-event-driven-starter',
+    meta: 'Open source',
+    status: 'live',
+    description:
+      'A production-ready serverless event-driven starter using AWS CDK, Lambda and SvelteKit.',
+    tags: ['TypeScript', 'AWS CDK', 'Svelte'],
+    href: 'https://github.com/leochilds/serverless-event-driven-starter-app',
+  },
+  {
+    name: 'library',
+    meta: 'Open source',
+    status: 'live',
+    description:
+      'An offline-first PWA for storing, searching and managing a large personal book collection.',
+    tags: ['TypeScript', 'PWA'],
+    href: 'https://github.com/leochilds/library',
+    liveUrl: 'https://leochilds.github.io/library/',
+  },
+];
+
+const beyond = [
+  {
+    name: '[Company / venture]',
+    meta: 'Founded · placeholder',
+    status: 'company',
+    description:
+      'Placeholder for a company or organisation you founded, built up, and handed on. A line on what it did and the role you played.',
+    tags: ['Founder'],
+  },
+  {
+    name: 'Geospatial & civil engineering',
+    meta: 'Field work · placeholder',
+    status: 'company',
+    statusLabel: 'Field',
+    description:
+      'Placeholder for non-software engineering work — surveying geodetic data on construction sites, bringing software thinking into civil projects.',
+    tags: ['Surveying', 'Engineering'],
+  },
+  {
+    name: 'Teaching & curriculum',
+    meta: 'Education · placeholder',
+    status: 'course',
+    statusLabel: 'Teaching',
+    description:
+      'Placeholder for in-person and online teaching — what you taught, to whom, and any materials worth linking.',
+    tags: ['Education'],
+  },
+];
+
+const sections = [
+  { idx: '01', title: 'Projects of note', desc: 'The work I would point to first — including private and archived.', items: ofNote },
+  { idx: '02', title: 'Current & active', desc: 'What is live and getting attention right now.', items: current },
+  { idx: '03', title: 'Beyond GitHub', desc: 'Engineering that does not live in a repository.', items: beyond },
+];
+---
+
+<Base title="Work" description="Selected work by Leo Childs — projects of note across security, software, and systems.">
+  <section class="work-hero wrap">
+    <p class="eyebrow reveal"><span class="idx">INDEX</span> Work</p>
+    <h1 class="h-display reveal" style="animation-delay: 0.1s">Selected work.</h1>
+    <p class="lead reveal" style="animation-delay: 0.18s">
+      A curated set, not a feed. Focused projects of note — current and
+      archived, public and private, code and otherwise.
+    </p>
+  </section>
+
+  {sections.map((section) => (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><span class="idx">{section.idx}</span> {section.title}</p>
+          <span class="head-note mono">{section.desc}</span>
+        </div>
+        <div class="work-grid">
+          {section.items.map((item) => (
+            <ProjectCard
+              name={item.name}
+              description={item.description}
+              meta={item.meta}
+              status={item.status as any}
+              statusLabel={(item as any).statusLabel}
+              tags={item.tags}
+              href={(item as any).href}
+              liveUrl={(item as any).liveUrl}
+              youtubeUrl={(item as any).youtubeUrl}
+              featured={(item as any).featured}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="wrap more-line">
+      <p class="prose">
+        More public repositories live on GitHub — this page is the edit, not the
+        archive.
+      </p>
+      <a href="https://github.com/leochilds" class="btn" target="_blank" rel="noopener noreferrer">
+        GitHub <span class="arrow">↗</span>
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .work-hero {
+    padding-top: clamp(3rem, 7vw, 5.5rem);
+    padding-bottom: 1rem;
+  }
+  .work-hero h1 { margin: 1.2rem 0 1.2rem; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+  }
+  .head-note {
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.04em;
+    max-width: 34ch;
+    text-align: right;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .work-grid :global(.pcard--featured) {
+    grid-column: 1 / -1;
+    min-height: 200px;
+  }
+  .work-grid :global(.pcard--featured .pcard-desc) {
+    max-width: 60ch;
+    font-size: 1rem;
+  }
+  @media (max-width: 820px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .head-note { text-align: left; }
+  }
+
+  .more-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+</style>

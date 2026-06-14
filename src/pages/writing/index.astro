@@ -1,0 +1,107 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Base title="Writing" description="Field notes from Leo Childs — occasional writing on security, software, and systems.">
+  <section class="writing-hero wrap">
+    <p class="eyebrow reveal"><span class="idx">LOG</span> Writing</p>
+    <h1 class="h-display reveal" style="animation-delay: 0.1s">Field notes.</h1>
+    <p class="lead reveal" style="animation-delay: 0.18s">
+      Occasional writing on security, software, and systems — and the thinking
+      underneath. No schedule, no filler.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      {posts.length > 0 ? (
+        <ul class="post-list">
+          {posts.map((post, i) => (
+            <li class="reveal" style={`animation-delay: ${0.05 * i}s`}>
+              <a href={`/writing/${post.id}`} class="post-row">
+                <span class="post-idx mono">{String(i + 1).padStart(2, '0')}</span>
+                <span class="post-main">
+                  <span class="post-title">{post.data.title}</span>
+                  {post.data.description && (
+                    <span class="post-excerpt">{post.data.description}</span>
+                  )}
+                </span>
+                <time class="post-date mono" datetime={post.data.date.toISOString()}>
+                  {post.data.date.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' })}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="empty">
+          <span class="mono">// no entries yet</span>
+          <p>The notes are being written. Check back soon.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .writing-hero {
+    padding-top: clamp(3rem, 7vw, 5.5rem);
+    padding-bottom: 1rem;
+  }
+  .writing-hero h1 { margin: 1.2rem 0; }
+
+  .post-list { list-style: none; border-top: 1px solid var(--line); }
+  .post-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.6rem 0.25rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    transition: padding 0.2s ease, background 0.2s ease;
+  }
+  .post-row:hover {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background: linear-gradient(90deg, var(--accent-faint), transparent);
+  }
+  .post-idx { color: var(--accent); font-size: 0.66rem; }
+  .post-title {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .post-row:hover .post-title { color: var(--accent-bright); }
+  .post-excerpt {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+    max-width: 60ch;
+  }
+  .post-date { color: var(--muted); font-size: 0.62rem; white-space: nowrap; }
+
+  @media (max-width: 600px) {
+    .post-row { grid-template-columns: auto 1fr; gap: 1rem; }
+    .post-date { display: none; }
+  }
+
+  .empty {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-1);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .empty .mono { color: var(--accent); display: block; margin-bottom: 0.75rem; }
+  .empty p { color: var(--text-dim); }
+</style>

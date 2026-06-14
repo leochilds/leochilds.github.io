@@ -17,67 +17,88 @@ const formattedDate = date.toLocaleDateString('en-GB', {
 ---
 
 <Base title={title} description={description}>
-  <article class="post">
+  <article class="post wrap">
+    <a href="/writing" class="back mono">← Writing</a>
     <header class="post-header">
+      <p class="eyebrow"><span class="idx">NOTE</span> Field note</p>
       <h1>{title}</h1>
-      <time datetime={date.toISOString()}>{formattedDate}</time>
+      <time datetime={date.toISOString()} class="mono">{formattedDate}</time>
     </header>
-    <div class="post-content">
+    <div class="post-content prose">
       <slot />
     </div>
+    <footer class="post-footer">
+      <a href="/writing" class="btn">← All notes</a>
+    </footer>
   </article>
 </Base>
 
 <style>
-  .post-header {
+  .post {
+    max-width: 720px;
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+    padding-bottom: 3rem;
+  }
+  .back {
+    color: var(--muted);
+    font-size: 0.66rem;
+    display: inline-block;
     margin-bottom: 2rem;
   }
+  .back:hover { color: var(--accent); }
 
+  .post-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
   .post-header h1 {
-    font-size: 2rem;
-    line-height: 1.2;
-    margin-bottom: 0.5rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 1.1rem 0 1rem;
   }
-
-  .post-header time {
-    color: var(--color-muted);
-    font-size: 0.9rem;
-  }
+  .post-header time { color: var(--muted); font-size: 0.66rem; }
 
   .post-content {
-    line-height: 1.75;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    max-width: none;
   }
-
   .post-content :global(h2) {
-    font-size: 1.4rem;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    margin: 2.5rem 0 0.9rem;
+    color: var(--text);
   }
-
   .post-content :global(h3) {
-    font-size: 1.15rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin: 1.75rem 0 0.6rem;
+    color: var(--text);
   }
-
-  .post-content :global(p) {
-    margin-bottom: 1rem;
-  }
-
+  .post-content :global(p) { margin-bottom: 1.2rem; }
+  .post-content :global(a) { text-decoration: underline; text-underline-offset: 3px; }
   .post-content :global(ul),
-  .post-content :global(ol) {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-  }
-
-  .post-content :global(li) {
-    margin-bottom: 0.25rem;
-  }
-
+  .post-content :global(ol) { margin: 0 0 1.2rem 1.4rem; }
+  .post-content :global(li) { margin-bottom: 0.4rem; }
   .post-content :global(blockquote) {
-    border-left: 3px solid var(--color-border);
-    padding-left: 1rem;
-    color: var(--color-muted);
-    margin-bottom: 1rem;
+    border-left: 2px solid var(--accent);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    margin: 1.5rem 0;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .post-content :global(img) {
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    margin: 1.5rem 0;
+  }
+
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
   }
 </style>

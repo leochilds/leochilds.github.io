@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <text x="2" y="26" font-size="28" font-family="sans-serif" font-weight="bold" fill="#000">L</text>
-  <style>
-    @media (prefers-color-scheme: dark) {
-      text { fill: #fff; }
-    }
-  </style>
+  <rect width="32" height="32" rx="6" fill="#0a0c0d"/>
+  <path d="M16 6 L25 16 L16 26 L7 16 Z" fill="none" stroke="#8257ff" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M16 12 L20 16 L16 20 L12 16 Z" fill="#8257ff"/>
 </svg>
