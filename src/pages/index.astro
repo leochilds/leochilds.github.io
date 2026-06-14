@@ -33,6 +33,15 @@ const selected = [
     href: '/work/cryptography',
   },
   {
+    name: 'Engtec Solutions',
+    org: 'Co-founded venture',
+    badge: 'Venture',
+    badgeClass: 'badge--company',
+    blurb:
+      'An engineering training company I co-founded — accredited and operating. I built its curriculum and platform and lead direction as a director. Proof I build ventures, not just advise them.',
+    href: '/work/engtec',
+  },
+  {
     name: 'Canvas Computing',
     org: 'Affiliation',
     badge: 'Affiliation',
@@ -156,7 +165,7 @@ const selected = [
       </div>
       <h2 class="h-section">Projects of note.</h2>
 
-      <div class="grid-2">
+      <div class="grid-3">
         {selected.map((p) => {
           const external = /^https?:\/\//.test(p.href);
           return (
@@ -290,13 +299,6 @@ const selected = [
     gap: 1rem;
   }
   @media (max-width: 820px) { .grid-3 { grid-template-columns: 1fr; } }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-  @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
 
   /* ---- Service cards ---- */
   .service-card { display: flex; flex-direction: column; min-height: 220px; }
